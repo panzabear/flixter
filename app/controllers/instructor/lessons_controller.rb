@@ -31,8 +31,8 @@ class Instructor::LessonsController < ApplicationController
   end
 
   def require_auth_for_enroll
-    if current_user.enrolled_in?(current_lesson.section.course)
+    if current_user.enrolled_in?(current_section.lesson.course)
       redirect_to course_path(current_lesson.section.course), alert: 'You must enroll first'
     end
   end
-
+end
