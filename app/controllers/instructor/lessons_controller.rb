@@ -2,6 +2,7 @@ class Instructor::LessonsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :require_authorized_for_current_section
+  before_action :require_auth_for_enroll
 
   def new
     @lesson = Lesson.new
@@ -29,4 +30,9 @@ class Instructor::LessonsController < ApplicationController
     params.require(:lesson).permit(:title, :subtitle, :video)
   end
 
-end
+  def require_auth_for_enroll
+    if current_user.enrolled_in?(current_lesson.section.course)
+      redirect_to course_path(current_lesson.section.course), alert: 'You must enroll first'
+    end
+  end
+
